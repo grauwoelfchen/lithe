@@ -1,0 +1,8 @@
+[workspace]
+members = [
+  "src/lithe",
+  "src/lithe-cli",
+]
+
+[profile.release]
+panic = "abort"

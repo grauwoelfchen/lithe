@@ -1,0 +1,112 @@
+stages:
+  - vet
+  - test
+  - build
+
+.vet-tools: &vet-tools
+  image: grauwoelfchen/rust-vet-tools:nightly
+  except:
+    - tags
+
+check:
+  stage: vet
+  <<: *vet-tools
+  before_script:
+    - rustc --version
+    - cargo --version
+    - mkdir -p .git/hooks
+  script:
+    - make vet:check
+
+fmt:
+  stage: vet
+  <<: *vet-tools
+  before_script:
+    - rustc --version
+    - cargo --version
+    - cargo fmt --version
+    - mkdir -p .git/hooks
+  script:
+    - make vet:format
+
+lint:
+  stage: vet
+  <<: *vet-tools
+  before_script:
+    - rustc --version
+    - cargo --version
+    - cargo clippy --version
+    - mkdir -p .git/hooks
+  script:
+    - make vet:lint
+
+test:
+  stage: test
+  <<: *vet-tools
+  before_script:
+    - rustc --version
+    - cargo --version
+    - mkdir -p .git/hooks
+  script:
+    - make test
+  only:
+    - master
+    - merge_requests
+
+build-nightly:
+  stage: build
+  image: grauwoelfchen/rust:nightly
+  before_script:
+    - rustc --version
+    - cargo --version
+    - mkdir -p .git/hooks
+  script:
+    - make build:debug
+  cache:
+    untracked: true
+  only:
+    - master
+    - merge_requests
+
+build-stable:
+  stage: build
+  image: grauwoelfchen/rust:stable
+  before_script:
+    - rustc --version
+    - cargo --version
+    - mkdir -p .git/hooks
+  script:
+    - make build:debug
+  cache:
+    untracked: true
+  only:
+    - master
+    - merge_requests
+
+build-nightly-release:
+  stage: build
+  image: grauwoelfchen/rust:nightly
+  before_script:
+    - rustc --version
+    - cargo --version
+    - mkdir -p .git/hooks
+  script:
+    - make build:release
+  cache:
+    untracked: true
+  only:
+    - master
+
+build-stable-release:
+  stage: build
+  image: grauwoelfchen/rust:stable
+  before_script:
+    - rustc --version
+    - cargo --version
+    - mkdir -p .git/hooks
+  script:
+    - make build:release
+  cache:
+    untracked: true
+  only:
+    - master

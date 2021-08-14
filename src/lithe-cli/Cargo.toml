@@ -1,0 +1,30 @@
+[package]
+name = "lithe-cli"
+version = "0.0.1"
+authors = ["Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>"]
+description = "A cli for lithe"
+documentation = "https://gitlab.com/grauwoelfchen/lithe"
+repository = "https://gitlab.com/grauwoelfchen/lithe"
+homepage = "https://gitlab.com/grauwoelfchen/lithe"
+readme = "README.md"
+keywords = ["cli", "text"]
+categories = ["command-line-utilities", "text-processing"]
+license = "Apache-2.0"
+exclude = ["test/*"]
+edition = "2018"
+
+[badges]
+gitlab = { repository = "grauwoelfchen/lithe", branch = "master" }
+
+[[bin]]
+name = "lithe"
+doc = false
+path = "src/main.rs"
+
+[dependencies]
+lithe = { path = "../lithe" }
+
+[dev-dependencies.cargo-husky]
+version = "1"
+default-features = false
+features = ["user-hooks"]

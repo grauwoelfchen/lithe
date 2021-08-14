@@ -1,0 +1,11 @@
+comment = { html_comment | code_comment }
+symbol = { code_comment_symbol | html_comment_symbol }
+
+code_comment_symbol = { "/" }
+html_comment_symbol = { "/!" }
+comment_text = { ANY* }
+
+code_comment = { code_comment_symbol ~ comment_text }
+html_comment = { html_comment_symbol ~ comment_text }
+
+WHITESPACE = _{ " " }
