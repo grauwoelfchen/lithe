@@ -13,6 +13,20 @@ https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-cli-v0.0.1...trunk)
 
 ## Tags
 
+### lithe-cli 0.0.1
+
+Tag [lithe-cli-v0.0.1](
+https://gitlab.com/grauwoelfchen/lithe/-/tags/lithe-cli-v0.0.1) has been
+released on `Sat, 14 Aug 2021`.
+
+#### Changes
+
+* Initial release
+
+#### Links
+
+* [crates.io](https://crates.io/crates/lithe-cli/0.0.1)
+
 ### lithe 0.0.1
 
 Tag [lithe-v0.0.1](
