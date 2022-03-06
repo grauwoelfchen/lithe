@@ -1,11 +1,44 @@
-comment = { html_comment | code_comment }
-symbol = { code_comment_symbol | html_comment_symbol }
+// document
+document = _{ SOI ~ elements ~ EOI }
 
+elements = _{ element ~ (blank_line* ~ element)* ~ blank_line? }
+element = _{ PEEK[..] ~ block_element }
+
+block_element = _{
+  doctype | html_comment | code_comment
+}
+
+// comment
 code_comment_symbol = { "/" }
 html_comment_symbol = { "/!" }
+symbol = { code_comment_symbol | html_comment_symbol }
 comment_text = { ANY* }
-
 code_comment = { code_comment_symbol ~ comment_text }
 html_comment = { html_comment_symbol ~ comment_text }
+comment = { html_comment | code_comment }
 
+// doctype: https://github.com/slim-template/slim/blob/39cc3fb82b34092ec9e92b8057c5b60c426ffca5/test/literate/TESTS.md#doctype-tags
+encoding = { ANY+ }
+xml_doctype = {
+  "xml"
+}
+xhtml_doctype = {
+  "html" | "5" | "1.1" | "strict" | "frameset" | "mobile" | "basic" |
+  "transitional"
+}
+html_doctype = {
+  "html" | "5" | "strict" | "frameset" | "transitional"
+}
+
+doctype_tag = { "doctype" }
+doctype_attributes = {
+  xml_doctype ~ encoding | xml_doctype |
+  xhtml_doctype |
+  html_doctype
+}
+doctype = { doctype_tag ~ blank_line* ~ doctype_attributes }
+
+// implicit whitespace
 WHITESPACE = _{ " " }
+
+blank_line = _{ WHITESPACE* ~ NEWLINE }

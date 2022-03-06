@@ -22,8 +22,8 @@ doc = false
 path = "src/main.rs"
 
 [dependencies]
-# lithe = { path = "../lithe" }
-lithe = "0.0.1"
+lithe = { path = "../lithe" }
+# lithe = "0.0.1"
 
 [dev-dependencies.cargo-husky]
 version = "1"

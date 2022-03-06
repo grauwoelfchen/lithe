@@ -5,32 +5,55 @@ extern crate pest;
 extern crate pest_derive;
 
 use pest::Parser;
+use pest::iterators::Pairs;
+use pest::RuleType;
 
 #[derive(Parser)]
 #[grammar = "grammar.pest"]
 struct LitheParser;
 
+#[allow(dead_code)]
+fn print_type<T>(_: &T) {
+    println!("{}", std::any::type_name::<T>());
+}
+
+fn print_pairs<T>(pairs: &mut Pairs<T>, level: usize)
+where
+    T: RuleType,
+{
+    let indent = " ".repeat(level);
+
+    for pair in pairs {
+        let rule = pair.as_rule();
+        let span = pair.as_span();
+
+        let tag = format!("{:?}", &rule);
+        if tag == "EOI" {
+            println!();
+            continue;
+        }
+
+        println!("{}Rule: {:?}", indent, rule);
+        println!("{}Span: {:?}", indent, span);
+
+        let mut inner = pair.into_inner();
+
+        // TODO: print inner text at here
+        if tag == "comment" {
+            if let Some(text) = inner.clone().last() {
+                println!("{}Text: {:?}", indent, text);
+            }
+        }
+
+        print_pairs(&mut inner, level + 2);
+    }
+}
+
 pub fn parse(s: &str) {
-    // TODO: define more rules
-    let result = LitheParser::parse(Rule::comment, s)
+    let mut result = LitheParser::parse(Rule::document, s)
         .unwrap_or_else(|e| panic!("{}", e));
 
-    // TODO: neturn something
-    for r in result {
-        println!("Rule: {:?}", r.as_rule());
-        println!("Span: {:?}", r.as_span());
-
-        // code_comment or html_comment
-        let c = r.into_inner().next().unwrap();
-        let rule = c.as_rule();
-
-        println!("Inner Rule: {:?}", rule);
-        println!("Inner Span: {:?}", c.as_span());
-
-        // comment-text
-        let t = c.into_inner().last().unwrap();
-        println!("Text: {}\n", t.as_str());
-    }
+    print_pairs(&mut result, 0);
 }
 
 #[cfg(test)]
@@ -70,6 +93,21 @@ mod test {
         ];
         for c in comments.iter() {
             assert_rule!(Rule::html_comment, c);
+        }
+    }
+
+    #[test]
+    fn test_doctype() {
+        let doctypes = vec![
+            "doctype xml",
+            "doctype xml ISO-8859-1",
+            "doctype html",
+            "doctype  5",
+            "doctype\n1.1",
+            "doctype\n\n\n  strict",
+        ];
+        for d in doctypes.iter() {
+            assert_rule!(Rule::doctype, d);
         }
     }
 }
