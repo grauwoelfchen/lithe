@@ -50,7 +50,7 @@ test:
   script:
     - make test
   only:
-    - master
+    - trunk
     - merge_requests
 
 build-nightly:
@@ -65,7 +65,7 @@ build-nightly:
   cache:
     untracked: true
   only:
-    - master
+    - trunk
     - merge_requests
 
 build-stable:
@@ -80,7 +80,7 @@ build-stable:
   cache:
     untracked: true
   only:
-    - master
+    - trunk
     - merge_requests
 
 build-nightly-release:
@@ -95,7 +95,7 @@ build-nightly-release:
   cache:
     untracked: true
   only:
-    - master
+    - trunk
 
 build-stable-release:
   stage: build
@@ -109,4 +109,4 @@ build-stable-release:
   cache:
     untracked: true
   only:
-    - master
+    - trunk
