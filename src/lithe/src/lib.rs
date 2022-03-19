@@ -1,5 +1,8 @@
 #![allow(clippy::upper_case_acronyms)]
 
+extern crate anyhow;
+#[macro_use]
+extern crate lazy_static;
 extern crate pest;
 #[macro_use]
 extern crate pest_derive;
@@ -7,6 +10,13 @@ extern crate pest_derive;
 use pest::Parser;
 use pest::iterators::Pairs;
 use pest::RuleType;
+use anyhow::Error;
+
+mod document;
+use document::Document;
+
+mod dtd;
+use dtd::DTD;
 
 #[derive(Parser)]
 #[grammar = "grammar.pest"]
@@ -17,6 +27,7 @@ fn print_type<T>(_: &T) {
     println!("{}", std::any::type_name::<T>());
 }
 
+#[allow(dead_code)]
 fn print_pairs<T>(pairs: &mut Pairs<T>, level: usize)
 where
     T: RuleType,
@@ -49,11 +60,68 @@ where
     }
 }
 
-pub fn parse(s: &str) {
-    let mut result = LitheParser::parse(Rule::document, s)
-        .unwrap_or_else(|e| panic!("{}", e));
+// TODO: renderer
+fn build(pairs: &mut Pairs<Rule>, level: usize, mut acc: Document) -> Document {
+    for pair in pairs {
+        let rule = pair.as_rule();
+        let span = pair.as_span();
 
-    print_pairs(&mut result, 0);
+        // https://github.com/slim-template/slim/blob/master/test/literate/TESTS.md
+        let mut inner = pair.into_inner();
+        match rule {
+            Rule::EOI => {
+                return acc;
+            }
+            Rule::xml_doctype => {
+                // TODO
+                // <?xml version="1.0" encoding="utf-8">
+                let doctype = document::DocumentType {
+                    name: "xml".to_string(),
+                    public_id: "",
+                    system_id: "",
+                };
+                acc.r#type = Some(doctype);
+            }
+            Rule::xhtml_doctype => {
+                let dtd = DTD::new("xhtml");
+                let definition = span.as_str();
+                let doctype = document::DocumentType {
+                    name: span.as_str().to_string(),
+                    public_id: dtd.public_id(definition),
+                    system_id: dtd.system_id(definition),
+                };
+                acc.r#type = Some(doctype);
+            }
+            Rule::html_doctype => {
+                let dtd = DTD::new("html");
+                let definition = span.as_str();
+                let doctype = document::DocumentType {
+                    name: span.as_str().to_string(),
+                    public_id: dtd.public_id(definition),
+                    system_id: dtd.system_id(definition),
+                };
+                acc.r#type = Some(doctype);
+            }
+            Rule::comment => {
+                let element = document::Element {
+                    name: "",
+                    children: vec![],
+                    attributes: vec![],
+                };
+                acc.children.push(element);
+            }
+            _ => {} // do nothing
+        }
+        acc = build(&mut inner, level + 2, acc)
+    }
+    acc
+}
+
+pub fn parse(s: &str) -> Result<Document, Error> {
+    let mut result = LitheParser::parse(Rule::document, s)?;
+
+    let doc = Document::new();
+    Ok(build(&mut result, 0, doc))
 }
 
 #[cfg(test)]

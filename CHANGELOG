@@ -1,3 +1,9 @@
+Sun 20 Mar 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
+	Add Document
+
+	* build() creates Document object
+	* parse() returns Ok(Document)
+
 Sun 06 Mar 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
 	* Add DOCTYPE support
 
