@@ -71,32 +71,88 @@ lazy_static! {
         ]);
 }
 
-pub struct DTD {
-    spec: &'static str,
+pub struct DTD<'a> {
+    spec: &'a str,
+    name: &'a str,
 }
 
-impl DTD {
-    pub fn new(spec: &'static str) -> Self {
-        DTD { spec }
+impl<'a> DTD<'a> {
+    // TODO: check arguments
+    pub fn new(spec: &'a str, name: &'a str) -> Self {
+        DTD { spec, name }
     }
 
-    pub fn public_id(&self, definition: &str) -> &'static str {
-        DOC_TYPES
-            .get(self.spec)
-            .unwrap()
-            .get("public_id")
-            .unwrap()
-            .get(definition)
-            .unwrap_or(&"")
+    fn decralation(&self, id: &'a str) -> Option<&'static str> {
+        let value = DOC_TYPES
+            .get(self.spec)?
+            .get(id)?
+            .get(self.name)
+            .unwrap_or(&"");
+        Some(value)
     }
 
-    pub fn system_id(&self, definition: &str) -> &'static str {
-        DOC_TYPES
-            .get(self.spec)
-            .unwrap()
-            .get("system_id")
-            .unwrap()
-            .get(definition)
-            .unwrap_or(&"")
+    // returns empty &'static str if invalid spec or name is given.
+    pub fn public_id(&self) -> &'static str {
+        self.decralation("public_id").unwrap_or("")
+    }
+
+    // returns empty &'static str if invalid spec or name is given.
+    pub fn system_id(&self) -> &'static str {
+        self.decralation("system_id").unwrap_or("")
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_new() {
+        let dtd = DTD::new("unknown", "");
+        assert_eq!(dtd.spec, "unknown");
+        assert_eq!(dtd.name, "");
+
+        let dtd = DTD::new("xhtml", "invalid");
+        assert_eq!(dtd.spec, "xhtml");
+        assert_eq!(dtd.name, "invalid");
+
+        let dtd = DTD::new("xhtml", "frameset");
+        assert_eq!(dtd.spec, "xhtml");
+        assert_eq!(dtd.name, "frameset");
+
+        let dtd = DTD::new("html", "invalid");
+        assert_eq!(dtd.spec, "html");
+        assert_eq!(dtd.name, "invalid");
+
+        let dtd = DTD::new("html", "strict");
+        assert_eq!(dtd.spec, "html");
+        assert_eq!(dtd.name, "strict");
+    }
+
+    #[test]
+    fn test_public_id() {
+        let dtd = DTD::new("invalid", "");
+        assert_eq!(dtd.public_id(), "");
+
+        let dtd = DTD::new("invalid", "html");
+        assert_eq!(dtd.public_id(), "");
+
+        let dtd = DTD::new("xhtml", "unknown");
+        assert_eq!(dtd.public_id(), "");
+
+        let dtd = DTD::new("xhtml", "5");
+        assert_eq!(dtd.public_id(), "");
+
+        let dtd = DTD::new("xhtml", "1.1");
+        assert_eq!(dtd.public_id(), "-//W3C//DTD XHTML 1.1//EN");
+
+        let dtd = DTD::new("html", "unknown");
+        assert_eq!(dtd.public_id(), "");
+
+        let dtd = DTD::new("html", "5");
+        assert_eq!(dtd.public_id(), "");
+
+        let dtd = DTD::new("html", "strict");
+        assert_eq!(dtd.public_id(), "-//W3C//DTD HTML 4.01//EN");
     }
 }

@@ -1,3 +1,5 @@
+use crate::document_type::DocumentType;
+
 pub struct Attr {
     pub name: String,
     pub value: String,
@@ -12,13 +14,6 @@ pub struct Element {
     pub name: &'static str,
     pub attributes: NamedNodeMap,
     pub children: HTMLCollection,
-}
-
-// https://developer.mozilla.org/en-US/docs/Web/API/DocumentType
-pub struct DocumentType {
-    pub name: String,
-    pub public_id: &'static str,
-    pub system_id: &'static str,
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document
@@ -40,5 +35,24 @@ impl Document {
 impl Default for Document {
     fn default() -> Self {
         Self::new()
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_document_new() {
+        let doc = Document::new();
+        assert!(doc.r#type.is_none());
+        assert!(doc.children.is_empty());
+    }
+
+    #[test]
+    fn test_document_default() {
+        let doc = Document::default();
+        assert!(doc.r#type.is_none());
+        assert!(doc.children.is_empty());
     }
 }

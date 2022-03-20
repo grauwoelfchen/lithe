@@ -15,8 +15,10 @@ use anyhow::Error;
 mod document;
 use document::Document;
 
+mod document_type;
 mod dtd;
-use dtd::DTD;
+
+use document_type::DocumentType;
 
 #[derive(Parser)]
 #[grammar = "grammar.pest"]
@@ -75,7 +77,7 @@ fn build(pairs: &mut Pairs<Rule>, level: usize, mut acc: Document) -> Document {
             Rule::xml_doctype => {
                 // TODO
                 // <?xml version="1.0" encoding="utf-8">
-                let doctype = document::DocumentType {
+                let doctype = DocumentType {
                     name: "xml".to_string(),
                     public_id: "",
                     system_id: "",
@@ -83,23 +85,11 @@ fn build(pairs: &mut Pairs<Rule>, level: usize, mut acc: Document) -> Document {
                 acc.r#type = Some(doctype);
             }
             Rule::xhtml_doctype => {
-                let dtd = DTD::new("xhtml");
-                let definition = span.as_str();
-                let doctype = document::DocumentType {
-                    name: span.as_str().to_string(),
-                    public_id: dtd.public_id(definition),
-                    system_id: dtd.system_id(definition),
-                };
+                let doctype = DocumentType::new("xhtml", span.as_str());
                 acc.r#type = Some(doctype);
             }
             Rule::html_doctype => {
-                let dtd = DTD::new("html");
-                let definition = span.as_str();
-                let doctype = document::DocumentType {
-                    name: span.as_str().to_string(),
-                    public_id: dtd.public_id(definition),
-                    system_id: dtd.system_id(definition),
-                };
+                let doctype = DocumentType::new("html", span.as_str());
                 acc.r#type = Some(doctype);
             }
             Rule::comment => {
