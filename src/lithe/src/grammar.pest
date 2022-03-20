@@ -22,6 +22,7 @@ encoding = { ANY+ }
 xml_doctype = {
   "xml"
 }
+// depends on mode
 xhtml_doctype = {
   "html" | "5" | "1.1" | "strict" | "frameset" | "mobile" | "basic" |
   "transitional"

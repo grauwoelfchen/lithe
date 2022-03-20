@@ -2,6 +2,7 @@ Mon 21 Mar 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
 	Refactor DocumentType and DTD
 
 	* Add unit tests
+	* Derive Debug trait for structs in document.rs
 
 Sun 20 Mar 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
 	Add Document

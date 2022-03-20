@@ -1,6 +1,7 @@
 use crate::dtd::DTD;
 
 // https://developer.mozilla.org/en-US/docs/Web/API/DocumentType
+#[derive(Debug)]
 pub struct DocumentType {
     pub name: String,
     pub public_id: &'static str,

@@ -12,13 +12,13 @@ use pest::iterators::Pairs;
 use pest::RuleType;
 use anyhow::Error;
 
-mod document;
+pub mod document;
 use document::Document;
 
-mod document_type;
-mod dtd;
-
+pub mod document_type;
 use document_type::DocumentType;
+
+mod dtd;
 
 #[derive(Parser)]
 #[grammar = "grammar.pest"]

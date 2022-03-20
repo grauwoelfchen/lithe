@@ -1,5 +1,6 @@
 use crate::document_type::DocumentType;
 
+#[derive(Debug)]
 pub struct Attr {
     pub name: String,
     pub value: String,
@@ -10,6 +11,7 @@ pub type NamedNodeMap = Vec<Attr>;
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Element
 // https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Element.html
+#[derive(Debug)]
 pub struct Element {
     pub name: &'static str,
     pub attributes: NamedNodeMap,
@@ -18,6 +20,7 @@ pub struct Element {
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document
 // https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Document.html
+#[derive(Debug)]
 pub struct Document {
     pub r#type: Option<DocumentType>,
     pub children: Vec<Element>,
