@@ -13,7 +13,7 @@ use pest::RuleType;
 use anyhow::Error;
 
 pub mod document;
-use document::Document;
+use document::{Document, NamedNodeMap};
 
 pub mod document_type;
 use document_type::DocumentType;
@@ -63,7 +63,11 @@ where
 }
 
 // TODO: renderer
-fn build(pairs: &mut Pairs<Rule>, level: usize, mut acc: Document) -> Document {
+fn build<'a>(
+    pairs: &mut Pairs<'a, Rule>,
+    level: usize,
+    mut acc: Document<'a>,
+) -> Document<'a> {
     for pair in pairs {
         let rule = pair.as_rule();
         let span = pair.as_span();
@@ -73,6 +77,11 @@ fn build(pairs: &mut Pairs<Rule>, level: usize, mut acc: Document) -> Document {
         match rule {
             Rule::EOI => {
                 return acc;
+            }
+            Rule::indent => {
+                // TODO
+                // Create tree structure
+                // dbg!(&rule);
             }
             Rule::xml_doctype => {
                 // TODO
@@ -95,6 +104,46 @@ fn build(pairs: &mut Pairs<Rule>, level: usize, mut acc: Document) -> Document {
             Rule::comment => {
                 let element = document::Element {
                     name: "",
+                    parent: None,
+                    children: vec![],
+                    attributes: vec![],
+                };
+                acc.children.push(element);
+            }
+            Rule::html => {
+                // global attributes
+                let mut attributes: NamedNodeMap = vec![];
+                for i in inner.clone() {
+                    let mut ii = i.into_inner().take(2);
+                    let name = if let Some(a) = ii.next() {
+                        a.as_span().as_str()
+                    } else {
+                        break;
+                    };
+                    let value = ii.next().map_or("", |a| a.as_span().as_str());
+                    attributes.push(document::Attr { name, value });
+                }
+                let element = document::Element {
+                    name: "html",
+                    parent: None,
+                    children: vec![],
+                    attributes,
+                };
+                acc.children.push(element);
+            }
+            Rule::head => {
+                let element = document::Element {
+                    name: "head",
+                    parent: None,
+                    children: vec![],
+                    attributes: vec![],
+                };
+                acc.children.push(element);
+            }
+            Rule::body => {
+                let element = document::Element {
+                    name: "body",
+                    parent: None,
                     children: vec![],
                     attributes: vec![],
                 };
@@ -102,7 +151,7 @@ fn build(pairs: &mut Pairs<Rule>, level: usize, mut acc: Document) -> Document {
             }
             _ => {} // do nothing
         }
-        acc = build(&mut inner, level + 2, acc)
+        acc = build(&mut inner, level + 1, acc)
     }
     acc
 }
@@ -162,7 +211,7 @@ mod test {
             "doctype html",
             "doctype  5",
             "doctype\n1.1",
-            "doctype\n\n\n  strict",
+            "doctype\n\n\n strict",
         ];
         for d in doctypes.iter() {
             assert_rule!(Rule::doctype, d);
