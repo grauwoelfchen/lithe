@@ -2,23 +2,25 @@
 document = _{ SOI ~ elements ~ EOI }
 
 elements = _{ element ~ (blank_line* ~ element)* ~ blank_line? }
-element = _{ PEEK[..] ~ block_element }
+element = _{ PEEK[..] ~ indent* ~ block_element }
 
 block_element = _{
-  doctype | html_comment | code_comment
+  doctype | html_comment | code_comment | html | head | body
 }
+
+indent = { (^"  ")+ }
 
 // comment
 code_comment_symbol = { "/" }
 html_comment_symbol = { "/!" }
 symbol = { code_comment_symbol | html_comment_symbol }
-comment_text = { ANY* }
-code_comment = { code_comment_symbol ~ comment_text }
-html_comment = { html_comment_symbol ~ comment_text }
+comment_text = ${ (!(blank_line) ~ ANY)+ }
+code_comment = ${ code_comment_symbol ~ (comment_text | (indent+ ~ (comment_text | blank_line)))* }
+html_comment = ${ html_comment_symbol ~ (comment_text | (indent+ ~ (comment_text | blank_line)))* }
 comment = { html_comment | code_comment }
 
 // doctype: https://github.com/slim-template/slim/blob/39cc3fb82b34092ec9e92b8057c5b60c426ffca5/test/literate/TESTS.md#doctype-tags
-encoding = { ANY+ }
+encoding = ${ ident+ }
 xml_doctype = {
   "xml"
 }
@@ -33,13 +35,29 @@ html_doctype = {
 
 doctype_tag = { "doctype" }
 doctype_attributes = {
-  xml_doctype ~ encoding | xml_doctype |
+  xml_doctype ~ (" " ~ encoding)? |
   xhtml_doctype |
   html_doctype
 }
-doctype = { doctype_tag ~ blank_line* ~ doctype_attributes }
+doctype = { doctype_tag ~ (" "|blank_line)* ~ doctype_attributes }
 
-// implicit whitespace
-WHITESPACE = _{ " " }
+char = _{'a'..'z' | 'A'..'Z' | '0'..'9' | "-"}
+ident = @{
+  ('a'..'z' | 'A'..'Z') ~
+  char*
+}
 
-blank_line = _{ WHITESPACE* ~ NEWLINE }
+global_attributes = { (ident+ ~ "=" ~ ident+)* }
+
+// https://developer.mozilla.org/en-US/docs/Web/HTML/Element/html
+// Permitted content: One <head> element, followed by one <body> element
+html = { "html" ~ (" " ~ global_attributes)? }
+head = { "head" }
+body = { "body" }
+
+// NOTE:
+// We may not be able to specificy WHITESPACE like this because of indent-based
+// syntax?
+// WHITESPACE = _{ " " }
+
+blank_line = _{ " "* ~ NEWLINE }

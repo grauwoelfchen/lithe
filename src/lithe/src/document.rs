@@ -1,32 +1,50 @@
 use crate::document_type::DocumentType;
 
 #[derive(Debug)]
-pub struct Attr {
-    pub name: String,
-    pub value: String,
+pub struct Attr<'a> {
+    pub name: &'a str,
+    pub value: &'a str,
 }
 
-pub type HTMLCollection = Vec<Element>;
-pub type NamedNodeMap = Vec<Attr>;
+pub type HTMLCollection<'a> = Vec<Element<'a>>;
+pub type NamedNodeMap<'a> = Vec<Attr<'a>>;
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Element
 // https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Element.html
 #[derive(Debug)]
-pub struct Element {
+pub struct Element<'a> {
     pub name: &'static str,
-    pub attributes: NamedNodeMap,
-    pub children: HTMLCollection,
+    pub attributes: NamedNodeMap<'a>,
+    pub parent: Option<&'a Element<'a>>,
+    pub children: HTMLCollection<'a>,
+}
+
+impl<'a> Element<'a> {
+    pub fn new() -> Self {
+        Self {
+            name: "",
+            attributes: vec![],
+            parent: None,
+            children: vec![],
+        }
+    }
+}
+
+impl<'a> Default for Element<'a> {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document
 // https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Document.html
 #[derive(Debug)]
-pub struct Document {
+pub struct Document<'a> {
     pub r#type: Option<DocumentType>,
-    pub children: Vec<Element>,
+    pub children: Vec<Element<'a>>,
 }
 
-impl Document {
+impl<'a> Document<'a> {
     pub fn new() -> Self {
         Self {
             r#type: None,
@@ -35,7 +53,7 @@ impl Document {
     }
 }
 
-impl Default for Document {
+impl<'a> Default for Document<'a> {
     fn default() -> Self {
         Self::new()
     }
