@@ -7,11 +7,25 @@ All notable changes belong to releases will be documented in this file.
 
 * [lithe-v0.0.2...trunk](
 https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-v0.0.2...trunk)
-* [lithe-cli-v0.0.1...trunk](
-https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-cli-v0.0.1...trunk)
+* [lithe-cli-v0.0.2...trunk](
+https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-cli-v0.0.2...trunk)
 
 
 ## Tags
+
+### lithe-cli 0.0.2
+
+Tag [lithe-cli-v0.0.2](
+https://gitlab.com/grauwoelfchen/lithe/-/tags/lithe-cli-v0.0.2) has been
+released on `Sat 14 Aug 2021`.
+
+#### Changes
+
+* Fix dependencies (use lithe v0.0.2)
+
+#### Links
+
+* [crates.io](https://crates.io/crates/lithe-cli/0.0.2)
 
 ### lithe 0.0.2
 
