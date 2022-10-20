@@ -5,19 +5,34 @@ All notable changes belong to releases will be documented in this file.
 
 ## Unreleased changes
 
-* [lithe-v0.0.1...trunk](
-https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-v0.0.1...trunk)
+* [lithe-v0.0.2...trunk](
+https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-v0.0.2...trunk)
 * [lithe-cli-v0.0.1...trunk](
 https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-cli-v0.0.1...trunk)
 
 
 ## Tags
 
+### lithe 0.0.2
+
+Tag [lithe-v0.0.2](
+https://gitlab.com/grauwoelfchen/lithe/-/tags/lithe-v0.0.2) has been
+released on `Fri 21 Oct 2022`.
+
+#### Changes
+
+* Add DOCTYPE support
+* Add html, head and body support
+
+#### Links
+
+* [crates.io](https://crates.io/crates/lithe/0.0.2)
+
 ### lithe-cli 0.0.1
 
 Tag [lithe-cli-v0.0.1](
 https://gitlab.com/grauwoelfchen/lithe/-/tags/lithe-cli-v0.0.1) has been
-released on `Sat, 14 Aug 2021`.
+released on `Sat 14 Aug 2021`.
 
 #### Changes
 
@@ -31,7 +46,7 @@ released on `Sat, 14 Aug 2021`.
 
 Tag [lithe-v0.0.1](
 https://gitlab.com/grauwoelfchen/lithe/-/tags/lithe-v0.0.1) has been
-released on `Sat, 14 Aug 2021`.
+released on `Sat 14 Aug 2021`.
 
 #### Changes
 
