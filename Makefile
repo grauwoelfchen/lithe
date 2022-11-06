@@ -89,12 +89,12 @@ build\:release\:lib: # Build only lib package with release mode
 .PHONY: build\:release\:lib
 
 # utility
-watch\:lib: # Start a process to watch for lib (require cargo-watch)
-	cargo watch --exec 'run --package $(PACKAGE)' --delay 0.3
+watch\:lib: # Monitor build process for lib (require cargo-watch)
+	cargo watch --exec 'build --package $(PACKAGE)' --delay 0.3
 .PHONY: watch\:lib
 
-watch\:cli: # Start a process to watch for cli (require cargo-watch)
-	cargo watch --exec 'run --package $(PACKAGE)-cli' --delay 0.3
+watch\:cli: # Monitor build process for cli (require cargo-watch)
+	cargo watch --exec 'build --package $(PACKAGE)-cli' --delay 0.3
 .PHONY: watch\:cli
 
 clean: # Remove built artifacts
