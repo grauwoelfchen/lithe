@@ -21,9 +21,18 @@ name = "lithe"
 doc = false
 path = "src/main.rs"
 
+[[test]]
+name = "integration"
+path = "test/test.rs"
+
 [dependencies]
 lithe = "0.0.2"
 # lithe = { path = "../lithe" }
+clap = { version = "4.0", features = ["derive"] }
+
+[dev-dependencies]
+assert_cmd = "2.0"
+predicates = "2.0"
 
 [dev-dependencies.cargo-husky]
 version = "1"

@@ -9,16 +9,12 @@ written in Rust.
 The status is still `alpha` ;)
 
 ```zsh
-# input (hello_world.slim)
-/ Hoi Zäme!
-
-# output
-% lithe-cli
-Rule: comment
-Span: Span { str: "/ Hoi Zäme!", start: 0, end: 12 }
-Inner Rule: code_comment
-Inner Span: Span { str: "/ Hoi Zäme!", start: 0, end: 12 }
-Text: Hoi Zäme!
+# input file
+% cat /path/to/file.slim
+doctype html
+# FIXME: output
+% lithe-cli /path/to/file.slim
+Document { type: Some(DocumentType { name: "html", public_id: "", system_id: "" }), children: [] }
 ```
 
 
