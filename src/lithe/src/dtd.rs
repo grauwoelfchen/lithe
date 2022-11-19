@@ -2,6 +2,7 @@ use std::collections::HashMap;
 
 type DECLARATIONS = HashMap<&'static str, HashMap<&'static str, &'static str>>;
 
+// https://www.w3.org/QA/2002/04/valid-dtd-list.html
 lazy_static! {
     static ref XHTML_PUBLIC_IDS: [(&'static str, &'static str); 8] = [
         ("html", ""),
@@ -71,9 +72,10 @@ lazy_static! {
         ]);
 }
 
+#[derive(Clone, Debug)]
 pub struct DTD<'a> {
-    spec: &'a str,
-    name: &'a str,
+    pub spec: &'a str,
+    pub name: &'a str,
 }
 
 impl<'a> DTD<'a> {
@@ -154,5 +156,35 @@ mod test {
 
         let dtd = DTD::new("html", "strict");
         assert_eq!(dtd.public_id(), "-//W3C//DTD HTML 4.01//EN");
+    }
+
+    #[test]
+    fn test_system_id() {
+        let dtd = DTD::new("invalid", "");
+        assert_eq!(dtd.system_id(), "");
+
+        let dtd = DTD::new("invalid", "html");
+        assert_eq!(dtd.system_id(), "");
+
+        let dtd = DTD::new("xhtml", "unknown");
+        assert_eq!(dtd.system_id(), "");
+
+        let dtd = DTD::new("xhtml", "5");
+        assert_eq!(dtd.system_id(), "");
+
+        let dtd = DTD::new("xhtml", "1.1");
+        assert_eq!(
+            dtd.system_id(),
+            "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"
+        );
+
+        let dtd = DTD::new("html", "unknown");
+        assert_eq!(dtd.system_id(), "");
+
+        let dtd = DTD::new("html", "5");
+        assert_eq!(dtd.system_id(), "");
+
+        let dtd = DTD::new("html", "strict");
+        assert_eq!(dtd.system_id(), "http://www.w3.org/TR/html4/strict.dtd");
     }
 }

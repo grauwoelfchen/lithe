@@ -40,11 +40,7 @@ fn build<'a>(
             Rule::xml_doctype => {
                 // TODO
                 // <?xml version="1.0" encoding="utf-8">
-                let doctype = DocumentType {
-                    name: "xml".to_string(),
-                    public_id: "",
-                    system_id: "",
-                };
+                let doctype = DocumentType::new("xml", "");
                 acc.r#type = Some(doctype);
             }
             Rule::xhtml_doctype => {

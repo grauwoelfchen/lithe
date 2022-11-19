@@ -19,6 +19,12 @@ pub struct Element<'a> {
     pub children: HTMLCollection<'a>,
 }
 
+// https://html.spec.whatwg.org/multipage/syntax.html#void-elements
+const VOID_ELEMENTS: [&str; 13] = [
+    "area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta",
+    "source", "track", "wbr",
+];
+
 impl<'a> Element<'a> {
     pub fn new() -> Self {
         Self {
@@ -27,6 +33,31 @@ impl<'a> Element<'a> {
             parent: None,
             children: vec![],
         }
+    }
+
+    pub fn as_tag(&self) -> String {
+        let mut out = format!("<{}", self.name);
+        if !self.attributes.is_empty() {
+            out.push(' ');
+            out.push_str(
+                &self
+                    .attributes
+                    .iter()
+                    .map(|a| format!("{}=\"{}\"", a.name, a.value))
+                    .collect::<Vec<_>>()
+                    .join(" "),
+            );
+        }
+        if VOID_ELEMENTS.contains(&self.name) {
+            out.push_str(" />");
+        } else {
+            out.push('>');
+            for c in &self.children {
+                out.push_str(&c.as_tag());
+            }
+            out.push_str(&format!("</{}>", self.name));
+        }
+        out
     }
 }
 
@@ -40,7 +71,7 @@ impl<'a> Default for Element<'a> {
 // https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Document.html
 #[derive(Debug)]
 pub struct Document<'a> {
-    pub r#type: Option<DocumentType>,
+    pub r#type: Option<DocumentType<'a>>,
     pub children: Vec<Element<'a>>,
 }
 

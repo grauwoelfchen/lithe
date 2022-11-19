@@ -10,11 +10,19 @@ extern crate pest_derive;
 use pest::iterators::Pairs;
 use pest::RuleType;
 
+#[macro_export]
+macro_rules! inline {
+    ($x:expr) => {
+        $x.replace("\n", "")
+    };
+}
+
 mod dtd;
 pub mod document;
 pub mod document_type;
 
 pub mod parser;
+pub mod renderer;
 
 #[allow(dead_code)]
 fn print_type<T>(_: &T) {
