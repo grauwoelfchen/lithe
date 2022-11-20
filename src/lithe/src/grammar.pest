@@ -1,14 +1,20 @@
 // document
-document = _{ SOI ~ elements ~ EOI }
+document = _{ SOI ~ content ~ EOI }
 
-elements = _{ element ~ (blank_line* ~ element)* ~ blank_line? }
-element = _{ PEEK[..] ~ indent* ~ block_element }
+element = _{ PEEK[..] ~ indent* ~ (void_element | block_element) }
+content = _{ element ~ (blank_line* ~ element)* ~ blank_line? }
 
 block_element = _{
-  doctype | html_comment | code_comment | html | head | body
+  doctype | html | head | body | html_comment | code_comment
 }
 
-indent = { (^"  ")+ }
+void_element = _{
+  link
+  // area | base | br | col | embed | hr | img | input | link | meta |
+  // source | track | wbr
+}
+
+indent = { ("  ")+ }
 
 // comment
 code_comment_symbol = { "/" }
@@ -25,34 +31,43 @@ xml_doctype = {
   "xml"
 }
 // depends on mode
-xhtml_doctype = {
+xhtml_doctype = _{
   "html" | "5" | "1.1" | "strict" | "frameset" | "mobile" | "basic" |
   "transitional"
 }
-html_doctype = {
+html_doctype = _{
   "html" | "5" | "strict" | "frameset" | "transitional"
 }
 
-doctype_tag = { "doctype" }
-doctype_attributes = {
+doctype_tag = _{ "doctype" }
+doctype_value = {
   xml_doctype ~ (" " ~ encoding)? |
   xhtml_doctype |
   html_doctype
 }
-doctype = { doctype_tag ~ (" "|blank_line)* ~ doctype_attributes }
+doctype = { &doctype_tag ~ doctype_tag ~ (" "|blank_line)* ~ doctype_value }
 
-char = _{'a'..'z' | 'A'..'Z' | '0'..'9' | "-"}
+char = _{'a'..'z' | 'A'..'Z' | '0'..'9' | "-" | "." | "_"}
 ident = @{
   ('a'..'z' | 'A'..'Z') ~
   char*
 }
 
-global_attributes = { (ident+ ~ "=" ~ ident+)* }
+link_attr_key = { "rel" | "href" }
+link_attr_value = _{ ident+ }
+
+global_attribute = { (ident+ ~ ("=" ~ "\"" ~ ident+ ~ "\"")?)* }
+link_attribute = { (link_attr_key ~ "=" ~ "\"" ~ link_attr_value ~ "\"" ~ " "?)* }
 
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/html
 // Permitted content: One <head> element, followed by one <body> element
-html = { "html" ~ (" " ~ global_attributes)? }
-head = { "head" }
+html = {
+  "html" ~ (" " ~ global_attribute)? ~
+  (NEWLINE+ ~ indent+ ~ head)? ~
+  (NEWLINE+ ~ indent+ ~ body)?
+}
+head = { "head" ~ (NEWLINE+ ~ indent+ ~ link)? }
+link = { "link" ~ (" " ~ link_attribute)? }
 body = { "body" }
 
 // NOTE:

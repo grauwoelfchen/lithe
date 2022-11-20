@@ -1,7 +1,7 @@
 use crate::dtd::DTD;
 
 // https://developer.mozilla.org/en-US/docs/Web/API/DocumentType
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct DocumentType<'a> {
     dtd: DTD<'a>,
     pub name: &'a str,
@@ -27,7 +27,7 @@ impl<'a> DocumentType<'a> {
         let mut out = "<!DOCTYPE".to_string();
         let dec = match self.dtd.spec {
             "html" => match self.dtd.name {
-                "5" => " HTML>".to_string(),
+                "5" | "html" => " HTML>".to_string(),
                 _ => format!(
                     " HTML PUBLIC \"{}\" \"{}\">",
                     self.public_id, self.system_id

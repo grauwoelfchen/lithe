@@ -40,7 +40,7 @@ mod test {
         assert_eq!("".to_string(), render(&doc).unwrap());
 
         let link = Element {
-            name: "link",
+            name: "link".to_string(),
             attributes: vec![
                 Attr {
                     name: "rel",
@@ -51,24 +51,21 @@ mod test {
                     value: "style.css",
                 },
             ],
-            parent: None,
             children: vec![],
         };
 
         let head = Element {
-            name: "head",
+            name: "head".to_string(),
             attributes: vec![],
-            parent: None,
             children: vec![link],
         };
 
         let html = Element {
-            name: "html",
+            name: "html".to_string(),
             attributes: vec![Attr {
                 name: "lang",
                 value: "en",
             }],
-            parent: None,
             children: vec![head],
         };
 

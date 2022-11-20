@@ -72,7 +72,7 @@ lazy_static! {
         ]);
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Eq, PartialEq)]
 pub struct DTD<'a> {
     pub spec: &'a str,
     pub name: &'a str,

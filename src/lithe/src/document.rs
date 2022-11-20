@@ -1,6 +1,6 @@
 use crate::document_type::DocumentType;
 
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub struct Attr<'a> {
     pub name: &'a str,
     pub value: &'a str,
@@ -11,11 +11,10 @@ pub type NamedNodeMap<'a> = Vec<Attr<'a>>;
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Element
 // https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Element.html
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub struct Element<'a> {
-    pub name: &'static str,
+    pub name: String,
     pub attributes: NamedNodeMap<'a>,
-    pub parent: Option<&'a Element<'a>>,
     pub children: HTMLCollection<'a>,
 }
 
@@ -28,9 +27,8 @@ const VOID_ELEMENTS: [&str; 13] = [
 impl<'a> Element<'a> {
     pub fn new() -> Self {
         Self {
-            name: "",
+            name: "".to_string(),
             attributes: vec![],
-            parent: None,
             children: vec![],
         }
     }
@@ -48,7 +46,7 @@ impl<'a> Element<'a> {
                     .join(" "),
             );
         }
-        if VOID_ELEMENTS.contains(&self.name) {
+        if VOID_ELEMENTS.contains(&self.name.as_str()) {
             out.push_str(" />");
         } else {
             out.push('>');
@@ -69,7 +67,7 @@ impl<'a> Default for Element<'a> {
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Document
 // https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.Document.html
-#[derive(Debug)]
+#[derive(Debug, Eq, PartialEq)]
 pub struct Document<'a> {
     pub r#type: Option<DocumentType<'a>>,
     pub children: Vec<Element<'a>>,
