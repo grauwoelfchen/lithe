@@ -7,11 +7,21 @@ All notable changes belong to releases will be documented in this file.
 
 * [lithe-v0.0.3...trunk](
 https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-v0.0.3...trunk)
-* [lithe-cli-v0.0.2...trunk](
-https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-cli-v0.0.2...trunk)
+* [lithe-cli-v0.0.3...trunk](
+https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-cli-v0.0.3...trunk)
 
 
 ## Tags
+
+### lithe-cli 0.0.3
+
+Tag [lithe-cli-v0.0.3](
+https://gitlab.com/grauwoelfchen/lithe/-/tags/lithe-cli-v0.0.3) has been
+released on `Sun 20 Nov 2022`.
+
+#### Changes
+
+* Fix dependencies (use lithe v0.0.3)
 
 ### lithe 0.0.3
 
