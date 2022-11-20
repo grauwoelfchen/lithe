@@ -5,13 +5,30 @@ All notable changes belong to releases will be documented in this file.
 
 ## Unreleased changes
 
-* [lithe-v0.0.2...trunk](
-https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-v0.0.2...trunk)
+* [lithe-v0.0.3...trunk](
+https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-v0.0.3...trunk)
 * [lithe-cli-v0.0.2...trunk](
 https://gitlab.com/grauwoelfchen/lithe/-/compare/lithe-cli-v0.0.2...trunk)
 
 
 ## Tags
+
+### lithe 0.0.3
+
+Tag [lithe-v0.0.3](
+https://gitlab.com/grauwoelfchen/lithe/-/tags/lithe-v0.0.3) has been
+released on `Sun 20 Nov 2022`.
+
+#### Changes
+
+* Create internal tree structure builder functions
+* Fix grammar for inner pairs (nested block elements. eg. `<html><link rel="..." /></html>`)
+* Remove unnecessary parent field from Element
+* Change the type of Element name as `String`
+
+#### Links
+
+* [crates.io](https://crates.io/crates/lithe/0.0.3)
 
 ### lithe-cli 0.0.2
 
