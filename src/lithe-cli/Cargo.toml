@@ -1,6 +1,6 @@
 [package]
 name = "lithe-cli"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>"]
 description = "A cli of lithe"
 documentation = "https://gitlab.com/grauwoelfchen/lithe"
