@@ -1,3 +1,14 @@
+Sun 20 Nov 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
+	Update parser
+
+	* Create tree structure builder functions
+	* Fix grammar for inner paris (nested block elements)
+	* Remove parent field from Element
+	* Change the type of Element name as String
+
+Sat 19 Nov 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
+	Add simple renderer
+
 Fri 21 Oct 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
 	Release lithe v0.0.2, lithe-cli v0.0.2
 
