@@ -26,7 +26,7 @@ name = "integration"
 path = "test/test.rs"
 
 [dependencies]
-lithe = "0.0.2"
+lithe = "0.0.3"
 # lithe = { path = "../lithe" }
 clap = { version = "4.0", features = ["derive"] }
 

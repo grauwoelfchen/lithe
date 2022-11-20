@@ -5,7 +5,7 @@ use std::path::PathBuf;
 
 use clap::Parser;
 
-use lithe::parse;
+use lithe::parser::parse;
 
 #[derive(Parser, Debug)]
 #[command(name = "Lithe CLI")]
