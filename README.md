@@ -12,9 +12,54 @@ The status is still `alpha` ;)
 # input file
 % cat /path/to/file.slim
 doctype html
-# FIXME: output
-% lithe-cli /path/to/file.slim
-Document { type: Some(DocumentType { name: "html", public_id: "", system_id: "" }), children: [] }
+html
+  head
+    link rel="stylesheet" href="style.css"
+  body
+# no renderer yet!
+% lithe /path/to/file.slim
+Document {
+  type: Some(DocumentType {
+    dtd: DTD {
+      spec: "html",
+      name: "html"
+    },
+    name: "html",
+    public_id: "",
+    system_id: ""
+  }),
+  children: [Element {
+    name: "html",
+    attributes: [],
+    children: [
+      Element {
+        name: "head",
+        attributes: [],
+        children: [Element {
+            name: "link",
+            attributes: [
+              Attr {
+                name: "rel",
+                value: "stylesheet"
+              },
+              Attr {
+                name: "href",
+                value: "style.css"
+              }],
+            children: []
+       }]
+      },
+      Element {
+        name: "body",
+        attributes: [],
+        children: []
+      }
+    ]
+  }]
+}
+```
+
+```zsh
 ```
 
 
@@ -31,7 +76,7 @@ Document { type: Some(DocumentType { name: "html", public_id: "", system_id: "" 
 
 ```text
 Lithe
-Copyright 2021 Yasuhiro Яша Asaka
+Copyright 2021-2022 Yasuhiro Яша Asaka
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
