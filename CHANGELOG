@@ -1,6 +1,6 @@
 Sun 20 Nov 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
+	Release lithe v0.0.3, lithe-cli v0.0.3
 	Update lithe-cli dependencies
-
 	Update parser
 
 	* Create tree structure builder functions
