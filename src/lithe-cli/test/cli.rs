@@ -41,7 +41,7 @@ mod test {
         let expected = "<!DOCTYPE html>";
 
         Command::cargo_bin(BIN_NAME)?
-            .args(&["-"])
+            .args(["-"])
             .write_stdin("doctype html")
             .assert()
             .success()
@@ -54,7 +54,7 @@ mod test {
         let expected = "";
 
         Command::cargo_bin(BIN_NAME)?
-            .args(&["test/data/empty.slim"])
+            .args(["test/data/empty.slim"])
             .assert()
             .success()
             .stdout(expected);
@@ -66,7 +66,7 @@ mod test {
         let expected = "No such file or directory (os error 2)";
 
         Command::cargo_bin(BIN_NAME)?
-            .args(&["test/data/nonexistent.slim"])
+            .args(["test/data/nonexistent.slim"])
             .assert()
             .failure()
             .stderr(predicates::str::contains(expected));
@@ -79,7 +79,7 @@ mod test {
         let expected = "<!DOCTYPE html>";
 
         Command::cargo_bin(BIN_NAME)?
-            .args(&["test/data/doctype-html.slim"])
+            .args(["test/data/doctype-html.slim"])
             .assert()
             .success()
             .stdout(expected);
