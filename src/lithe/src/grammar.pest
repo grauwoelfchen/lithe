@@ -63,11 +63,11 @@ link_attribute = { (link_attr_key ~ "=" ~ "\"" ~ link_attr_value ~ "\"" ~ " "?)*
 // Permitted content: One <head> element, followed by one <body> element
 html = {
   "html" ~ (" " ~ global_attribute)? ~
-  (NEWLINE+ ~ indent+ ~ head)? ~
-  (NEWLINE+ ~ indent+ ~ body)?
+  (NEWLINE+ ~ indent* ~ head)? ~
+  (NEWLINE+ ~ indent* ~ body)?
 }
-head = { "head" ~ (NEWLINE+ ~ indent+ ~ link)? }
-link = { "link" ~ (" " ~ link_attribute)? }
+head = { "head" ~ (NEWLINE+ ~ indent* ~ link)? }
+link = { "link" ~ (" "+ ~ link_attribute)? }
 body = { "body" }
 
 // NOTE:

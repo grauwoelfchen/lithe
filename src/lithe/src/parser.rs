@@ -100,7 +100,7 @@ fn build<'a>(pairs: &mut Pairs<'a, Rule>) -> Document<'a> {
                         let doctype = DocumentType::new(spec, name);
                         doc.r#type = Some(doctype);
                         // TODO: Is there any way? (instead of reusing pairs)
-                        doc.children = build_element(pairs, 0);
+                        doc.children = build_element(pairs);
                         break;
                     }
                 }
@@ -145,10 +145,7 @@ fn build_attributes<'a>(pairs: &mut Pairs<'a, Rule>) -> Vec<Attr<'a>> {
     attributes
 }
 
-fn build_element<'a>(
-    pairs: &mut Pairs<'a, Rule>,
-    level: usize,
-) -> Vec<Element<'a>> {
+fn build_element<'a>(pairs: &mut Pairs<'a, Rule>) -> Vec<Element<'a>> {
     let mut result = vec![];
     for pair in pairs {
         let rule = pair.as_rule();
@@ -156,12 +153,6 @@ fn build_element<'a>(
         match rule {
             Rule::EOI => {
                 return result;
-            }
-            Rule::indent => {
-                // FIXME: for stacktrace?
-                // let span = pair.as_span();
-                // let indent = span.end() - span.start();
-                // dbg!(&indent);
             }
             Rule::comment => {
                 let element = Element {
@@ -181,7 +172,7 @@ fn build_element<'a>(
                 };
                 let mut inner = pair.into_inner();
                 element.attributes = build_attributes(&mut inner);
-                element.children = build_element(&mut inner, level);
+                element.children = build_element(&mut inner);
                 result.push(element);
             }
             Rule::link => {
