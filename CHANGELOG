@@ -1,3 +1,8 @@
+Wed 23 Nov 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
+	Remove unused `level` argument (parser)
+	Fix needless_borrow issues (eg. &["..."])
+	Fix deprecated field name in .clippy.toml (disallowed-names)
+
 Sun 20 Nov 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
 	Release lithe v0.0.3, lithe-cli v0.0.3
 	Update lithe-cli dependencies
