@@ -105,4 +105,31 @@ mod test {
         assert!(doc.r#type.is_none());
         assert!(doc.children.is_empty());
     }
+
+    #[test]
+    fn test_document_equality() {
+        let a = Document::default();
+        let b = Document::default();
+        assert_eq!(a, b);
+    }
+
+    #[test]
+    fn test_element_equality() {
+        let a = Element::default();
+        let b = Element::default();
+        assert_eq!(a, b);
+    }
+
+    #[test]
+    fn test_attr_equality() {
+        let a = Attr {
+            name: "",
+            value: "",
+        };
+        let b = Attr {
+            name: "",
+            value: "",
+        };
+        assert_eq!(a, b);
+    }
 }
