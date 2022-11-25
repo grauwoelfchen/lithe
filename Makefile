@@ -1,38 +1,30 @@
 PACKAGE = lithe
 
 # vet
+.PHONY: vet\:check check vet\:format format fmt vet\:lint lint vet\:all vet
+
 vet\:check: # Check error [synonym: check]
-	@cargo check --all --verbose
-.PHONY: vet\:check
+	@cargo check --workspace --verbose
 
 check: vet\:check
-.PHONY: check
 
 vet\:format: # Show format diff [synonym: vet:fmt, format, fmt]
 	@cargo fmt --all -- --check
-.PHONY: vet\:format
 
 vet\:fmt: vet\:format
-.PHONY: vet\:fmt
 
 format: vet\:format
-.PHONY: format
 
 fmt: vet\:format
-.PHONY: fmt
 
 vet\:lint: # Show suggestions relates to hygiene [synonym: lint]
 	@cargo clippy --all-targets
-.PHONY: vet\:lint
 
 lint: vet\:lint
-.PHONY: lint
 
 vet\:all: check fmt lint # Run all vet targets
-.PHONY: vet\:all
 
 vet: vet\:check # Alias for vet:check
-.PHONY: vet
 
 # test
 test\:unit: # Run only unit tests for lib
