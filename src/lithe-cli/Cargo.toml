@@ -10,7 +10,10 @@ readme = "README.md"
 keywords = ["cli", "text"]
 categories = ["command-line-utilities", "text-processing"]
 license = "Apache-2.0"
-exclude = ["test/*"]
+exclude = [
+  "test/*",
+  "Makefile",
+]
 edition = "2018"
 
 [badges]
