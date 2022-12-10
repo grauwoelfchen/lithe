@@ -40,7 +40,7 @@ lint:
   script:
     - make vet:lint
 
-test-doc:
+test:doc:
   stage: test
   <<: *vet-tools
   before_script:
@@ -53,7 +53,7 @@ test-doc:
     - trunk
     - merge_requests
 
-test-unit:
+test:unit:
   stage: test
   <<: *vet-tools
   before_script:
@@ -66,7 +66,7 @@ test-unit:
     - trunk
     - merge_requests
 
-test-integration:
+test:integration:
   stage: test
   <<: *vet-tools
   before_script:
@@ -79,7 +79,7 @@ test-integration:
     - trunk
     - merge_requests
 
-test-cov:
+coverage:
   stage: test
   <<: *vet-tools
   before_script:
@@ -88,14 +88,14 @@ test-cov:
     - kcov --version
     - mkdir -p .git/hooks
   script:
-    - make coverage:lib
+    - make coverage
   after_script:
     - cat target/coverage/lib/index.js
   only:
     - trunk
     - merge_requests
 
-build-nightly:
+build:nightly:
   stage: build
   image: grauwoelfchen/rust:nightly
   before_script:
@@ -110,7 +110,7 @@ build-nightly:
     - trunk
     - merge_requests
 
-build-stable:
+build:stable:
   stage: build
   image: grauwoelfchen/rust:stable
   before_script:
@@ -125,7 +125,7 @@ build-stable:
     - trunk
     - merge_requests
 
-build-nightly-release:
+build:nightly:release:
   stage: build
   image: grauwoelfchen/rust:nightly
   before_script:
@@ -139,7 +139,7 @@ build-nightly-release:
   only:
     - trunk
 
-build-stable-release:
+build:stable:release:
   stage: build
   image: grauwoelfchen/rust:stable
   before_script:
