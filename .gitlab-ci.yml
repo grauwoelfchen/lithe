@@ -89,8 +89,20 @@ coverage:
     - mkdir -p .git/hooks
   script:
     - make coverage
+  needs:
+    - test:doc
+    - test:unit
+    - test:integration
   after_script:
     - cat target/coverage/lib/index.js
+  coverage: /^\d+.\d+\%/
+  artifacts:
+    name: ${CI_JOB_NAME}-${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHA}
+    expire_in: 3 days
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: target/coverage/lib/lithe-*.*/cobertura.xml
   only:
     - trunk
     - merge_requests

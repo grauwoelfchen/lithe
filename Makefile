@@ -65,7 +65,8 @@ coverage\:lib: # Generate a coverage report for lib crate [synonym: cov:lib]
 	kcov --verify --include-path=$$dir/src $$target_dir $${file[0]}; \
 	grep 'index.html' $$target_dir/index.js* | \
 		grep --only-matching --extended-regexp \
-		'covered":"([0-9]*\.[0-9]*|[0-9]*)"' | sed -E 's/[a-z\:"]*//g'
+		'covered":"([0-9]*\.[0-9]*|[0-9]*)"' | \
+		sed -E 's/[a-z\:"]*//g;s/([0-9\.]+)/\1%/'
 
 cov\:lib: coverage\:lib
 
