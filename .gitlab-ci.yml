@@ -2,6 +2,7 @@ stages:
   - vet
   - test
   - build
+  - pages
 
 .vet-tools: &vet-tools
   image: grauwoelfchen/rust-vet-tools:nightly
@@ -162,5 +163,20 @@ build:stable:release:
     - make build:release
   cache:
     untracked: true
+  only:
+    - trunk
+
+pages:
+  stage: pages
+  needs:
+    - coverage
+  script:
+    - rm -fr public && mkdir -p pubilc
+    - mv target/coverage/lib/ public/
+  artifacts:
+    untracked: true
+    paths:
+      - public
+    expire_in: 14 days
   only:
     - trunk
