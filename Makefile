@@ -75,59 +75,51 @@ coverage: coverage\:lib # Alias for coverage:lib [synonym: cov]
 cov: coverage
 
 # build
+.PHONY: build build\:cli build\:lib \
+	build\:debug build\:debug\:cli build\:debug\:lib \
+	build\:release build\:release\:cli build\:release\:lib
+
 build\:debug: # Run packages [synonym: build]
 	cargo build --workspace
-.PHONY: build\:debug
 
 build: build\:debug
-.PHONY: build
 
 build\:debug\:cli: # Build only cli package [synonym: build:cli]
 	cargo build --bin $(PACKAGE)
-.PHONY: build\:debug\:cli
 
 build\:cli: build\:debug\:cli
-.PHONY: build\:cli
 
 build\:debug\:lib: # Build only lib package [synonym: build:lib]
 	cargo build --lib
-.PHONY: build\:debug\:lib
 
 build\:lib: build\:debug\:lib
-.PHONY: build\:lib
 
 build\:release: # Build packages with release mode
 	cargo build --workspace --release
-.PHONY: build\:release
 
 build\:release\:cli: # Build only cli package with release mode
 	cargo build --package $(PACKAGE)-cli --bin $(PACKAGE) --release
-.PHONY: build\:release\:cli
 
 build\:release\:lib: # Build only lib package with release mode
 	cargo build --package $(PACKAGE) --lib --release
-.PHONY: build\:release\:lib
 
 # utility
+.PHONY: watch\:lib watch\:cli clean package install help
+
 watch\:lib: # Monitor build process for lib (require cargo-watch)
 	cargo watch --exec 'build --package $(PACKAGE)' --delay 0.3
-.PHONY: watch\:lib
 
 watch\:cli: # Monitor build process for cli (require cargo-watch)
 	cargo watch --exec 'build --package $(PACKAGE)-cli' --delay 0.3
-.PHONY: watch\:cli
 
 clean: # Remove built artifacts
 	@cargo clean
-.PHONY: clean
 
 package\:%: # Create a package of `lithe` or `lithe-cli`
 	@cargo package --manifest-path src/$(subst package:,,$@)/Cargo.toml
-.PHONY: package
 
 install: # Install `lithe-cli` into the dir same with cargo
 	@cargo install --path src/$(PACKAGE)-cli --force
-.PHONY: install
 
 help: # Display this message
 	@set -uo pipefail; \
@@ -139,7 +131,6 @@ help: # Display this message
 		awk 'BEGIN {FS = ": # "}; \
 			{printf "\033[38;05;222m%-18s\033[0m %s\n", $$1, $$2}' | \
 		sort
-.PHONY: help
 
 .DEFAULT_GOAL = vet\:all
 default: vet\:all
