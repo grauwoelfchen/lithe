@@ -27,24 +27,51 @@ vet\:all: check fmt lint # Run all vet targets
 vet: vet\:check # Alias for vet:check
 
 # test
-test\:unit: # Run only unit tests for lib
+.PHONY: test\:unit\:lib test\:unit\:bins test\:unit test\:doc test\:integration \
+	test\:all test cov\:lib coverage\:lib coverage cov
+
+test\:unit\:lib: # Run only unit tests for lib
+	@cargo test --lib -- --nocapture
+
+test\:unit\:bins: # Run only unit tests for bins
+	@cargo test --bins -- --nocapture
+
+test\:unit: # Run all unit tests for lib and bins both [synonym: test]
 	@cargo test --lib --bins -- --nocapture
-.PHONY: test\:unit
 
 test\:doc: # Run only doc tests
 	@cargo test --doc
-.PHONY: test\:doc
 
 test\:integration: # Run only integration tests
 	@cargo test --test integration -- --nocapture
-.PHONY: test\:integration
 
 test\:all: test\:doc # Run all tests
 	@cargo test --lib --bins --test integration -- --nocapture
-.PHONY: test\:all
 
-test: test\:unit # Alias ofr test:unit
-.PHONY: test
+test: test\:unit
+
+cov\:lib: coverage\:lib
+
+coverage\:lib: # Generate a coverage report for lib crate [synonym: cov:lib]
+	@set -uo pipefail; \
+	dir="$$(pwd)"; \
+	target_dir="$${dir}/target/coverage/lib"; \
+	cargo test --lib --no-run --target-dir=$${target_dir}; \
+	result=($${target_dir}/index.js*); \
+	if [ -f $${result}[0] ]; then \
+		rm "$${target_dir}/index.js*"; \
+	fi; \
+	file=($$target_dir/debug/deps/$(PACKAGE)-*); \
+	kcov --verify --include-path=$$dir/src $$target_dir $${file[0]}; \
+	grep 'index.html' $$target_dir/index.js* | \
+		grep --only-matching --extended-regexp \
+		'covered":"([0-9]*\.[0-9]*|[0-9]*)"' | sed -E 's/[a-z\:"]*//g'
+
+cov\:lib: coverage\:lib
+
+coverage: coverage\:lib # Alias for coverage:lib [synonym: cov]
+
+cov: coverage
 
 # build
 build\:debug: # Run packages [synonym: build]

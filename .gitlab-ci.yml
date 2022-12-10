@@ -40,7 +40,7 @@ lint:
   script:
     - make vet:lint
 
-test:
+test-doc:
   stage: test
   <<: *vet-tools
   before_script:
@@ -48,7 +48,49 @@ test:
     - cargo --version
     - mkdir -p .git/hooks
   script:
-    - make test
+    - make test:doc
+  only:
+    - trunk
+    - merge_requests
+
+test-unit:
+  stage: test
+  <<: *vet-tools
+  before_script:
+    - rustc --version
+    - cargo --version
+    - mkdir -p .git/hooks
+  script:
+    - make test:unit
+  only:
+    - trunk
+    - merge_requests
+
+test-integration:
+  stage: test
+  <<: *vet-tools
+  before_script:
+    - rustc --version
+    - cargo --version
+    - mkdir -p .git/hooks
+  script:
+    - make test:integration
+  only:
+    - trunk
+    - merge_requests
+
+test-cov:
+  stage: test
+  <<: *vet-tools
+  before_script:
+    - rustc --version
+    - cargo --version
+    - kcov --version
+    - mkdir -p .git/hooks
+  script:
+    - make coverage:lib
+  after_script:
+    - cat target/coverage/lib/index.js
   only:
     - trunk
     - merge_requests
