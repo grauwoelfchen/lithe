@@ -1,5 +1,16 @@
 # Lithe
 
+[![pipeline](
+https://gitlab.com/grauwoelfchen/lithe/badges/trunk/pipeline.svg)](
+https://gitlab.com/grauwoelfchen/lithe/commits/trunk) [![coverage](
+https://gitlab.com/grauwoelfchen/lithe/badges/trunk/coverage.svg)](
+https://gitlab.com/grauwoelfchen/lithe/commits/trunk) [![crate::lithe-cli](
+https://img.shields.io/crates/v/lithe-cli?label=lithe-cli)](
+https://crates.io/crates/lithe-cli) [![crate::lithe](
+https://img.shields.io/crates/v/lithe?label=lithe)](
+https://crates.io/crates/lithe) [![doc::lithe](
+https://img.shields.io/docsrs/lithe/latest?color=blue)](https://docs.rs/crate/lithe)
+
 A slim template engine by using [Pest](https://github.com/pest-parser/pest) and
 written in Rust.
 
