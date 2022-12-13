@@ -1,7 +1,12 @@
+Tue 13 Dec 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
+	Generate a website for library documentation
+
+	* Add a GitLab pages website for library documentation of lithe
+
 Sat 10 Dec 2022 Yasuhiro Яша Asaka <yasuhiro.asaka@grauwoelfchen.net>
 	Add a coverage CI job and reporting
 
-	* Add a GitLab pages for HTML coverage report
+	* Add a GitLab pages website for HTML coverage report
 	* Update .gitlab-ci.yml to generate artifacts (incl. cobertura XML)
 	* Add status badges in README.md
 	* Make documentation tests available to be run separatedly

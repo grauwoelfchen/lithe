@@ -168,15 +168,21 @@ build:stable:release:
 
 pages:
   stage: pages
-  needs:
-    - coverage
+  image: grauwoelfchen/rust:stable
+  before_script:
+    - rustc --version
+    - rustdoc --version
+    - cargo --version
   script:
-    - rm -fr public && mkdir -p pubilc
-    - mv target/coverage/lib/ public/
+    - make doc
+    - echo "<meta http-equiv=\"refresh\" content=\"0; url=lithe\">" \
+        > ./target/doc/index.html
+    - mkdir pubilc
+    - cp -R target/doc/* public/
   artifacts:
     untracked: true
     paths:
       - public
-    expire_in: 14 days
   only:
+    - tags
     - trunk

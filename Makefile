@@ -74,6 +74,15 @@ coverage: coverage\:lib # Alias for coverage:lib [synonym: cov]
 
 cov: coverage
 
+# documentation
+.PHONY: document doc
+
+document: # Generate documentation files [synonym: doc]
+	cargo doc --no-deps --package $(PACKAGE)
+.PHONY: document
+
+doc: document
+
 # build
 .PHONY: build build\:cli build\:lib \
 	build\:debug build\:debug\:cli build\:debug\:lib \
