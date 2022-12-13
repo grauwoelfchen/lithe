@@ -177,7 +177,7 @@ pages:
     - make doc
     - echo "<meta http-equiv=\"refresh\" content=\"0; url=lithe\">" \
         > ./target/doc/index.html
-    - mkdir pubilc
+    - mkdir public
     - cp -R target/doc/* public/
   artifacts:
     untracked: true
