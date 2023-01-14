@@ -23,14 +23,14 @@ mod test {
     #[test]
     fn test_version() -> Result<(), Box<dyn Error>> {
         let version = env::var("CARGO_PKG_VERSION")?;
-        let expected = format!("Lithe CLI {}", version);
+        let expected = &format!("Lithe CLI {}", version);
 
         for flag in &["-V", "--version"] {
             Command::cargo_bin(BIN_NAME)?
                 .arg(flag)
                 .assert()
                 .success()
-                .stdout(predicate::str::contains(&expected));
+                .stdout(predicate::str::contains(expected));
         }
         Ok(())
     }
