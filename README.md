@@ -15,6 +15,14 @@ A slim template engine by using [Pest](https://github.com/pest-parser/pest) and
 written in Rust.
 
 
+## Repos
+
+* [GitLab.com](https://gitlab.com/grauwoelfchen/lithe) (+ build pipelines)
+* [GitHub](https://github.com/grauwoelfchen/lithe)
+* [sourcehut](https://git.sr.ht/~grauwoelfchen/lithe)
+* [Codeberg](https://codeberg.org/grauwoelfchen/lithe)
+
+
 ## Usage
 
 The status is still `alpha` ;)
