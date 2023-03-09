@@ -35,7 +35,7 @@ clap = { version = "4.0", features = ["derive"] }
 
 [dev-dependencies]
 assert_cmd = "2.0"
-predicates = "2.0"
+predicates = "2.1"
 
 [dev-dependencies.cargo-husky]
 version = "1"
